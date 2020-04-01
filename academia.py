@@ -5,9 +5,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException  
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from secrets import password
 from time import sleep
 import datetime
+import math
 
 class academia():
     def __init__(self):
@@ -23,9 +23,13 @@ class academia():
 
     def login(self):
         url = 'https://academia.srmist.edu.in/accounts/signin?_sh=false&hideidp=true&portal=10002227248&client_portal=true&servicename=ZohoCreator&service_language=en&serviceurl=https%3A%2F%2Facademia.srmist.edu.in%2F'
-        username = 'ashishyoel_ma@srmuniv.edu.in'
+        #username = 'ashishyoel_ma@srmuniv.edu.in'
+        #password = 'THEpaswordis@10'
         self.driver.get(url)
         sleep(2)
+        username = input('Enter your username\n')
+        password = input('Enter password\n')
+        print()
         email = self.driver.find_element_by_xpath('//*[@id="Email"]')
         email.send_keys(username)
         passF = self.driver.find_element_by_xpath('//*[@id="Password"]')
@@ -40,8 +44,7 @@ class academia():
         self.driver.get(attendande_link)
         sleep(5)
 
-        if(self.findElement('//*[@id="details-button"]')): 
-            print('Advance button is there')
+        if(self.findElement('//*[@id="details-button"]')):
             advance_btn = self.driver.find_element_by_xpath('//*[@id="details-button"]')
             advance_btn.click()
             proceed = self.driver.find_element_by_xpath('//*[@id="proceed-link"]')
@@ -77,53 +80,17 @@ class academia():
             attendandePercentage.append(ap.text)
         
         for j in range(len(subject)):
-            if(float(attendandePercentage[j]) >= 75 and float(attendandePercentage[j]) <= 80):
-                print('Your attendance in ' + subject[j] + ' (' + category[j] + ') is less than 80%. Be cautious!!')
-            elif(float(attendandePercentage[j]) > 80 and float(attendandePercentage[j]) <= 90):
-                print('Your attendance in ' + subject[j] + ' (' + category[j] + ') is more than 80%. Chill!!')
-            elif(float(attendandePercentage[j]) > 90 and float(attendandePercentage[j]) <= 100):
-                print('Your attendance in ' + subject[j] + ' (' + category[j] + ') is more than 90%. Get Some Life Dude!!')
-            else : 
-                print('You are doomed!! Your attendance in ' + subject[j] + ' (' + category[j] + ') is less than 75%')
+            canBunk = 0
+
+            if(float(attendandePercentage[j]) >= 75):
+                fh = math.floor( ( (int(hoursConducted[j]) - int(hoursAbsent[j]) ) *100 )/75)
+                if(fh > int(hoursConducted[j])):
+                    canBunk = fh-int(hoursConducted[j])     
+                    
+            print(subject[j] + ' (' + category[j] + ') - Can Bunk = ' + str(canBunk))
+
             print()
 
-        
-'''
-        academic_planner = 'https://academia.srmist.edu.in/#View:Academic_Planner_2019_20_EVEN'
-        d = datetime.datetime.now()
-        date = d.day + 1
-        month = d.strftime("%b") + " \'" +  d.strftime("%y")
-        day = d.strftime("%a")
-
-        self.driver.get(academic_planner)
-        sleep(5)
-        m = self.driver.find_element_by_xpath('//font[contains(text(), "' + month + '")]')
-        month_index = 0
-        
-        for x in range (3,28,5):
-            ele = self.driver.find_element_by_xpath('//*[@id="zc-viewcontainer_Academic_Planner_2019_20_EVEN"]/div[1]/table[1]/tbody/tr[1]/th['+str(x)+']/strong/font')
-            if(m.text == ele.text) :
-                month_index = x
-                break
-        
-        dates = []
-        dayOrder = []
-        event = []
-        days = [] 
-
-        for i in range(7): 
-            dd   = self.driver.find_element_by_xpath('//*[@id="zc-viewcontainer_Academic_Planner_2019_20_EVEN"]/div[1]/table[1]/tbody/tr['+str(date+i)+']/td['+str(month_index-2)+']')
-            dayy = self.driver.find_element_by_xpath('//*[@id="zc-viewcontainer_Academic_Planner_2019_20_EVEN"]/div[1]/table[1]/tbody/tr['+str(date+i)+']/td['+str(month_index-1)+']')
-            do   = self.driver.find_element_by_xpath('//*[@id="zc-viewcontainer_Academic_Planner_2019_20_EVEN"]/div[1]/table[1]/tbody/tr['+str(date+i)+']/td['+str(month_index+1)+']')
-            dates.append(dd.text)
-            days.append(dayy.text)
-            dayOrder.append(do.text)
-
-        print(dates)
-        print(days)
-        print(dayOrder)
-
-'''
 
 bot = academia()
 bot.login()
