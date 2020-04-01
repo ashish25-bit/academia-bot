@@ -7,4 +7,4 @@ To run :
     In the terminal : 
     set the virtual environment => source bin/activate
     pip install selenium
-    Enter your username and password in the terminal
+    Enter your username and password when comment is popped up in the terminal
