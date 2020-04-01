@@ -1,5 +1,5 @@
 # Academia-Bot
-Web Automation of academia which gives you the number of classes you can bunk in a respective subject
+Web Automation of academia which gives you the number of classes you can bunk in a respective subject.
 
 To run : 
 
