@@ -13,6 +13,7 @@ class academia():
     def __init__(self):
         self.driver = webdriver.Chrome()
 
+    # to check whether the element is present
     def findElement(self,xpath):
         try:
             self.driver.find_element_by_xpath(xpath)
@@ -23,8 +24,6 @@ class academia():
 
     def login(self):
         url = 'https://academia.srmist.edu.in/accounts/signin?_sh=false&hideidp=true&portal=10002227248&client_portal=true&servicename=ZohoCreator&service_language=en&serviceurl=https%3A%2F%2Facademia.srmist.edu.in%2F'
-        #username = 'ashishyoel_ma@srmuniv.edu.in'
-        #password = 'THEpaswordis@10'
         self.driver.get(url)
         sleep(2)
         username = input('Enter your username\n')
@@ -38,20 +37,19 @@ class academia():
         btn.click()
         sleep(5)
         
-        
-
+        # get to the attendance
         attendande_link = 'https://academia.srmuniv.ac.in/#View:My_Attendance'
         self.driver.get(attendande_link)
         sleep(5)
 
+        # to handle the error
         if(self.findElement('//*[@id="details-button"]')):
             advance_btn = self.driver.find_element_by_xpath('//*[@id="details-button"]')
             advance_btn.click()
             proceed = self.driver.find_element_by_xpath('//*[@id="proceed-link"]')
             proceed.click()
-            self.driver.get(attendande_link)
             sleep(5)
-         
+        
         parent = self.driver.find_element_by_xpath('//*[@id="zc-viewcontainer_My_Attendance"]/div[1]/div[4]/div/table[2]/tbody')
         child = parent.find_elements_by_xpath('//*[@id="zc-viewcontainer_My_Attendance"]/div[1]/div[4]/div/table[2]/tbody/tr')
         courseCode = []
@@ -81,15 +79,15 @@ class academia():
         
         for j in range(len(subject)):
             canBunk = 0
-
             if(float(attendandePercentage[j]) >= 75):
                 fh = math.floor( ( (int(hoursConducted[j]) - int(hoursAbsent[j]) ) *100 )/75)
                 if(fh > int(hoursConducted[j])):
-                    canBunk = fh-int(hoursConducted[j])     
-                    
+                    canBunk = fh-int(hoursConducted[j])         
             print(subject[j] + ' (' + category[j] + ') - Can Bunk = ' + str(canBunk))
-
             print()
+
+        logoutBtn = self.driver.find_element_by_xpath('//*[@id="zc-header-right"]/table/tbody/tr/td[4]/a')
+        logoutBtn.click()
 
 
 bot = academia()
