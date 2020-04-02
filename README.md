@@ -5,6 +5,11 @@ To run :
 
     download chromedriver and move to /usr/bin/local
     In the terminal : 
-    set the virtual environment => source bin/activate
+    To set up the virtual environment : 
+    1. virtualenv -p python3 .
+    2. source bin/activate
+    Then install selenium : 
     pip install selenium
-    Enter your username and password when comment is popped up in the terminal
+    Run the program : 
+    python academia.py
+    Enter your username and password when asked in the terminal
