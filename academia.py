@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException  
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options  
 from time import sleep
 import datetime
 import math
@@ -46,17 +47,18 @@ class academia():
         sleep(2)
         username = input('Enter your username\n')
         password = input('Enter password\n')
+        
         print()
         email = self.driver.find_element_by_xpath('//*[@id="Email"]')
         email.send_keys(username)
         passF = self.driver.find_element_by_xpath('//*[@id="Password"]')
         passF.send_keys(password)
-        btn = self.driver.find_element_by_xpath('//*[@id="signinForm"]/div[5]/input')
+        btn = self.driver.find_element_by_xpath('//*[@id="signinForm"]/div[6]/input')
         btn.click()
         print('Logging you in...\n')
         sleep(5)
         
-        #validating the user
+        # validating the user
         if(self.findElement('//*[@id="signinForm"]/div[1]/span')) :
             print('Invalid username or password\n')
             self.login()
@@ -76,7 +78,7 @@ class academia():
                 advance_btn.click()
                 proceed = self.driver.find_element_by_xpath('//*[@id="proceed-link"]')
                 proceed.click()
-                sleep(5)
+                sleep(8)
             
             parent = self.driver.find_element_by_xpath('//*[@id="zc-viewcontainer_My_Attendance"]/div[1]/div[4]/div/table[2]/tbody')
             child = parent.find_elements_by_xpath('//*[@id="zc-viewcontainer_My_Attendance"]/div[1]/div[4]/div/table[2]/tbody/tr')
@@ -113,9 +115,8 @@ class academia():
                     fh = math.floor( ( (int(hoursConducted[j]) - int(hoursAbsent[j]) ) *100 )/75)
                     if(fh > int(hoursConducted[j])):
                         canBunk = fh-int(hoursConducted[j])         
-                print(subject[j] + ' (' + category[j] + ') - Can Bunk = ' + str(canBunk))
+                print(subject[j] + ' (' + category[j] + ') - Can Bunk = ' + str(canBunk) + '(% = ' + attendandePercentage[j] + ')')
                 print()
-
             self.chooseOption()
 
 bot = academia()
